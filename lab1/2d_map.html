@@ -1,0 +1,165 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Intro to MapView - Create a 2D map | Sample | ArcGIS Maps SDK for JavaScript 4.26</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.26/"></script>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView"], (Map, MapView) => {
+        const map = new Map({
+          basemap: "topo-vector"
+        });
+
+        // map.addMany([
+        //   {
+        //     type: "feature",
+        //     geometry: {
+        //       type: "point",
+        //       longitude: 50,
+        //       latitude: 10
+        //     },
+        //     symbol: {
+        //       type: "simple-marker",
+        //       color: "blue",
+        //       size: 10
+        //     }
+        //   },
+        //   {
+        //     type: "feature",
+        //     geometry: {
+        //       type: "point",
+        //       longitude: 50,
+        //       latitude: 10
+        //     },
+        //     symbol: {
+        //       type: "simple-marker",
+        //       color: "red",
+        //       size: 10
+        //     }
+        //   }
+        // ]);
+        
+
+        require(["esri/layers/GraphicsLayer"], (GraphicsLayer) => {
+          const graphicsLayer = new GraphicsLayer();
+          map.add(graphicsLayer);
+          graphicsLayer.addMany([
+            newGraphic,
+            newPoint,
+            polylineGraphic,
+            polygonGraphic
+          ]);
+          // graphicsLayer.add(simpleMarkerSymbol);
+        });
+
+        let newPoint = {
+          type: "feature",
+          geometry: {
+            type: "point",
+            longitude: 10,
+            latitude: 10
+          },
+          symbol: {
+            type: "simple-marker",
+            color: "blue",
+            size: 100
+          }
+        };
+
+        const simpleMarkerSymbol = {
+          type: "simple-marker",
+          color: "red",
+          size: 50
+        };
+
+        const newGraphic = {
+          geometry: {
+            type: "point",
+            longitude: 20,
+            latitude: 20
+          },
+          symbol: simpleMarkerSymbol
+        };
+
+
+        const polyline = {
+          type: "polyline",
+          paths: [
+            // Longitude, latitude
+            [10, 10], 
+            [20, 20],
+            [30, 30] 
+          ]
+        };
+
+        const lineSymbol = {
+          type: "simple-line",
+          color: [226, 119, 40], // Orange
+          width: 10
+        };
+
+        const polylineGraphic = {
+          geometry: polyline,
+          symbol: lineSymbol
+        };
+
+        const polygon = {
+          type: "polygon",
+          rings: [
+            // Longitude, latitude
+            [106.8032053, 10.869244], 
+            [106.8017563, 10.869399], 
+            [106.8016983, 10.87015], 
+            [106.8015263, 10.870369], 
+            [106.8023605, 10.87139], 
+            // [106.8019525, 10.870242], 
+            [106.8028535, 10.8701],  
+            [106.8029015, 10.869657],  
+            [106.8026715, 10.869588],  
+            [106.8032053, 10.869244], 
+          ]
+        };
+
+        const fillSymbol = {
+          type: "simple-fill",
+          color: [227, 139, 79, 0.8], // Orange, opacity 80%
+          outline: {
+            color: [255, 255, 255],
+            width: 1
+          }
+        };
+
+        const polygonGraphic = {
+          geometry: polygon,
+          symbol: fillSymbol
+        };
+
+        // graphicsLayer.add(polygonGraphic);
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [106.8032053, 10.869244] // longitude, latitude
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
